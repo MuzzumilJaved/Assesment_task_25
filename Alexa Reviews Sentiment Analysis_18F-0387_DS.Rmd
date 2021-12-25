@@ -1,0 +1,47 @@
+---
+title: "Alexa Reviews Sentiment Analysis_18F-0387_DS"
+author: "18F-0387"
+date: "12/22/2021"
+output: Word
+---
+
+```{r}
+
+alexa_reviews <- read.csv(file = 'C:/Users/Muzzumil/Desktop/amazon.tsv',sep = '\t',header = TRUE)
+alexa_reviews <- alexa_reviews[1:5,1:4]
+alexa_reviews
+library(Hmisc)
+describe(alexa_reviews)
+custom_colors <- c("skyblue", "yellowgreen", 'tomato', "blue", "red")
+pie(alexa_reviews$rating, labels = rownames(alexa_reviews), col=custom_colors, main = "Alexa Reviews Ratings")
+
+
+library("plotrix")
+draw.circle(0, 0, 0.4, col="white")
+
+
+
+pacman::p_load(sentimentr, dplyr, magrittr)
+sentiment(alexa_reviews$verified_reviews)
+var <- alexa_reviews
+i<-1
+for(review in var$verified_reviews)
+{
+   var$Sentiment[i] <- sentiment(review)$sentiment
+   if(var$Sentiment[i] > 0)
+   {
+       var$category[i] = "Positive"
+   }
+   else if(var$Sentiment[i] < 0)
+   {
+       var$category[i] = "Negative"
+   }
+   else if(var$Sentiment[i] == 0)
+   {
+       var$category[i] = "Neutral"
+   }
+   i<-i+1
+}
+var
+
+```
